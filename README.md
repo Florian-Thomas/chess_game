@@ -1,6 +1,8 @@
 # Chess game with Monte-Carlo Tree Search Algorithm and Minimax
 
-
+This chess game can be played against an Artificial Intelligence algorithm based on Monte-Carlo Tree Search and Minimax algorithms.
+It is also possible to play against another human player or to watch 2 AI play against each other.
+The maximum allowed time for the AI turn needs to be specified at the beginning of the game.
 ## Run
 
 To launch the game, run:
