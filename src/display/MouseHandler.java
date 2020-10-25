@@ -129,10 +129,10 @@ public class MouseHandler implements MouseListener, ActionListener{
 						else if(engine.isSelected()==true && e.getButton()==1 ) {
 							int k = 0;
 							while (engine.isSelected() && k<engine.getBoard()[engine.getSelectedCoord()[0]][engine.getSelectedCoord()[1]].canGo().size()) {
-								int [] l=engine.getBoard()[engine.getSelectedCoord()[0]][engine.getSelectedCoord()[1]].canGo().get(k); //k-ième coordonnée de la liste canGo
+								int [] l=engine.getBoard()[engine.getSelectedCoord()[0]][engine.getSelectedCoord()[1]].canGo().get(k); 
 								k++;
 								if (l[0]==i && l[1]==j) {
-									engine.move(engine.getSelectedCoord()[0], engine.getSelectedCoord()[1], i, j);//déplace la pièce sélectionnée vers la coordonnée désirée
+									engine.move(engine.getSelectedCoord()[0], engine.getSelectedCoord()[1], i, j); 
 									engine.moves.get(engine.getTurn()-1).add(new int[][] {{i,j},{engine.getSelectedCoord()[0], engine.getSelectedCoord()[1]}});
 									engine.endTurn();
 									gameWindow.repaint();

@@ -3,7 +3,15 @@
 
 ## Run
 
-To launch the game, run Launcher.py.
+To launch the game, run:
+
+```
+cd src
+javac game/Launcher.java
+java game.Launcher
+```
+
+## Play
 
 You can then choose the game mode between Player vs Player, Player vs AI and AI vs AI. If an AI is used, the time limit given to the AI must be specified in seconds.
 
