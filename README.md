@@ -5,6 +5,8 @@ It is also possible to play against another human player or to watch 2 AIs play 
 The maximum allowed time for the AI turn needs to be specified at the beginning of the game.
 ## Run
 
+You need to have Java installed on your computer.
+
 To launch the game, run:
 
 ```
@@ -12,6 +14,7 @@ cd src
 javac game/Launcher.java
 java game.Launcher
 ```
+Or you can launch it in any IDE by running the file game/Launcher.java.
 
 ## Play
 
