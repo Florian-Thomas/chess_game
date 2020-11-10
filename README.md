@@ -14,7 +14,7 @@ cd src
 javac game/Launcher.java
 java game.Launcher
 ```
-Or you can launch it in any IDE by running the file game/Launcher.java.
+Or you can launch it in any IDE by running the file src/game/Launcher.java.
 
 ## Play
 
