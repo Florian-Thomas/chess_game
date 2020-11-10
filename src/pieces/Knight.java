@@ -6,6 +6,9 @@ import javax.swing.ImageIcon;
 
 import game.Engine;
 
+/**
+ * Knight piece.
+ */
 public class Knight extends Pieces {
 	
 	// Images
@@ -14,7 +17,10 @@ public class Knight extends Pieces {
 	private ImageIcon iconBlack = new ImageIcon(this.getClass().getResource("black_knight.png"));
 	private Image blackPiece = iconBlack.getImage();
 	
-	// Getters and Setters
+	/**
+	 * Return the image of the piece.
+	 * @return Image of the piece.
+	 */
 	public Image getImage() {
 		if (this.getPlayer()==1) {
 			return blackPiece;
@@ -24,13 +30,21 @@ public class Knight extends Pieces {
 		}
 	}
 	
-	// Constructor
+	/**
+	 * Constructor
+	 * @param player	Player controlling the piece
+	 * @param i			First coordinate of the piece
+	 * @param j			Second coordinate of the piece
+	 * @param g			Game board
+	 */	
 	public Knight(int player, int i, int j, Engine g) {
 		super(player, i, j, g);
 		this.value = 3;
 	}
 	
-	// Possible moves
+	/**
+	 * Possible moves
+	 */
 	public ArrayList <int[]> canGo() {
 		ArrayList<int[]> r = new ArrayList<int[]>();
 		ArrayList<int[]> r1 = new ArrayList<int[]>();
@@ -52,7 +66,9 @@ public class Knight extends Pieces {
 		return r1;
 	}
 	
-	// Possible targets
+	/**
+	 * Possible targets.
+	 */
 	public ArrayList<int[]> canEat() {
 		
 		ArrayList<int[]> r = new ArrayList<int[]>();

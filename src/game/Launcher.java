@@ -6,7 +6,9 @@ import javax.swing.JOptionPane;
 import AI.MCTS;
 import display.GameWindow;
 
-// Launch the game
+/**
+ * Launch the game
+ */
 public class Launcher {
 
 	public static void main(String[] args) {

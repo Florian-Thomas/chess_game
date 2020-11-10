@@ -6,6 +6,9 @@ import javax.swing.ImageIcon;
 
 import game.Engine;
 
+/**
+ * Pawn piece.
+ */
 public class Pawn extends Pieces{
 
 	// Images
@@ -14,7 +17,10 @@ public class Pawn extends Pieces{
 	private ImageIcon iconBlack= new ImageIcon(this.getClass().getResource("black_pawn.png"));
 	private Image pieceNoire = iconBlack.getImage();
 
-	// Getters and Setters
+	/**
+	 * Return the image of the piece.
+	 * @return Image of the piece.
+	 */
 	public Image getImage() {
 		if (this.getPlayer()==1) {
 			return pieceNoire;
@@ -24,13 +30,21 @@ public class Pawn extends Pieces{
 		}
 	}
 	
-	// Constructor
+	/**
+	 * Constructor
+	 * @param player	Player controlling the piece
+	 * @param i			First coordinate of the piece
+	 * @param j			Second coordinate of the piece
+	 * @param g			Game board
+	 */	
 	public Pawn(int player, int i, int j, Engine g) {
 		super(player, i, j, g);
 		this.value = 1;
 	}
 
-	// Possible moves
+	/**
+	 * Possible moves
+	 */
 	public ArrayList <int[]> canGo() {
 		ArrayList<int[]> r = new ArrayList<int[]>();
 		
@@ -86,7 +100,10 @@ public class Pawn extends Pieces{
 		}
 		return r;
 	}
-	// Promote the pawn to queen when reached the end of the board
+	
+	/**
+	 * Promote the pawn to queen when reached the end of the board.
+	 */
 	public void promote() {
 		if (this.i==7 && this.getPlayer()==1) {
 			engine.changePiece(new int[] {this.i,this.j}, new Queen(1, i, j, engine));
@@ -95,7 +112,9 @@ public class Pawn extends Pieces{
 			engine.changePiece(new int[] {this.i,this.j}, new Queen(2, i, j, engine));
 		}
 	}
-	// Possible targets
+	/**
+	 * Possible targets.
+	 */
 	public ArrayList<int[]> canEat() {
 		ArrayList<int[]> r = new ArrayList<int[]>();
 

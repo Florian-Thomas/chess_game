@@ -8,7 +8,10 @@ import pieces.Queen;
 import pieces.King;
 import pieces.Rook;
 
-// Contains the game
+
+/**
+ * Contains the game.
+ */
 public class Engine {
 	private boolean isOver;
 	private int winner=0;
@@ -86,7 +89,17 @@ public class Engine {
 	
 	// Constructors
 	
-	// Copy a board
+	/**
+	 *  Copy a board.
+	 * 
+	 * @param board			Board to copy
+	 * @param castling		Boolean true if a castling has been done in the copied game
+	 * @param isSelected	Boolean true if a piece is selected
+	 * @param selectedCoord	Selected coord only used is isSelected
+	 * @param moves			Previous moves in the game
+	 * @param isOver 		Boolean true if the game is over
+	 * @param turn			Player's turn (1 or 2)
+	 */
 	public Engine (Pieces board[][], boolean[] castling, boolean isSelected, int[] selectedCoord, ArrayList <ArrayList <int [][]>> moves, boolean isOver, int turn) {
 		this.setOver(isOver);
 		this.turn=turn;
@@ -141,7 +154,9 @@ public class Engine {
 
 	}
 	
-	// New game
+	/**
+	 * Create a new game.
+	 */
 	public Engine () {	
 		this.setOver(false);
 		this.castling[0]=false;
@@ -181,7 +196,14 @@ public class Engine {
 		}
 	}
 
-	// Move a piece from i,j to i1, j1
+	/**
+	 * Move a piece from i,j to i1, j1.
+	 * 
+	 * @param i		First coordinate of the piece to move
+	 * @param j		Second coordinate of the piece to move
+	 * @param i1	First coordinate of the cell to go
+	 * @param j1	Second coordinate of the cell to go
+	*/
 	public void move(int i,int j,int i1,int j1) {
 		this.board[i][j].setHasMove(true);
 		
@@ -245,7 +267,15 @@ public class Engine {
 		}
 	}
 	
-	// Used to simulate a move and then reverse it
+	/**
+	 * Used to simulate a move and then reverse it.
+	 * 
+	 * @param i		First coordinate of the piece to move
+	 * @param j		Second coordinate of the piece to move
+	 * @param i1	First coordinate of the cell to go
+	 * @param j1	Second coordinate of the cell to go
+	 * @return 		Any piece eaten during the move
+	 */
 	public Pieces moveAndBackLater(int i,int j,int i1,int j1) { 
 		this.board[i][j].setHasMove(true);
 		Pieces eaten = null;
@@ -313,7 +343,10 @@ public class Engine {
 		return eaten;
 	}
 	
-	// End the turn and check if the game is over or not
+	
+	/**
+	 * End the turn and check if the game is over or not 
+	 */
 	public void endTurn() { 
 		if (this.king().size()<2) {
 			this.isOver=true;
@@ -331,9 +364,13 @@ public class Engine {
 
 
 	
-
-
-	// Check if coord is in the list
+	/**
+	 * Check if coord is in the list t.
+	 * 
+	 * @param t		
+	 * @param coord	
+	 * @return			True if coord has been found
+	 */
 	public boolean in(ArrayList<int[]> t, int[] coord ) {
 		for (int k = 0; k<t.size();k++) {
 			if(t.get(k)[0]==coord[0] &&t.get(k)[1]==coord[1]) {
@@ -343,7 +380,11 @@ public class Engine {
 		return false;
 	}
 	
-	// Remove coord from the list
+	/**
+	 * Remove coord from the list t
+	 * @param t			
+	 * @param coord
+	*/
 	public void remove(ArrayList<int[]> t, int[] coord) {
 		ArrayList<int[]> l =new ArrayList<int[]>();
 		for (int k = 0; k<t.size();k++) {
@@ -357,12 +398,20 @@ public class Engine {
 		}
 	}
 	
-	// Change a piece 
+	/**
+	 * Change a piece at coord with p.
+	 * @param coord
+	 * @param p
+	 */
 	public void changePiece(int[] coord, Pieces p) {
 		this.board[coord[0]][coord[1]]=p;
 	}
 	
-	// Retrieves the kings' coordinates
+	
+	/**
+	 * Retrieves the kings' coordinates
+	 * @return 	The coordinates of the kings
+	 */
 	public ArrayList <int[][]> king(){
 
 		ArrayList<int [][]> r = new ArrayList<int[][]>();
@@ -381,33 +430,43 @@ public class Engine {
 	}
 
 	
-	// Know if a king is threatened
+	/**
+	 * Check if a king is threatened.
+	 * @param i			King's first coordinate
+	 * @param j			King's second coordinate
+	 * @param player	Player owning the king
+	 * @return			True if the king is controlled
+	 */
 	public boolean pieceIsControlled(int i, int j, int player){
-		ArrayList <int []> ennemis = new ArrayList <int []>();
-		int ligne = 0;
-		int hauteur = 0;
-		while (ligne<=7){
-			hauteur=0;
-			while (hauteur<=7){
-				if (this.board[ligne][hauteur]!=null && this.board[ligne][hauteur].getPlayer()!=player){
-					ArrayList<int[]> r = this.board[ligne][hauteur].canEat();
+		ArrayList <int []> opponents = new ArrayList <>();
+		int line = 0;
+		int height = 0;
+		while (line<=7){
+			height=0;
+			while (height<=7){
+				if (this.board[line][height]!=null && this.board[line][height].getPlayer()!=player){
+					ArrayList<int[]> r = this.board[line][height].canEat();
 					for (int k=0; k<r.size(); k++){
 						if (r.get(k)[0]==i && r.get(k)[1]==j){
-							ennemis.add(new int []{ligne,hauteur});
+							opponents.add(new int []{line,height});
 						}
 					}
 				}
-				hauteur++;
+				height++;
 			}
-			ligne++;	
+			line++;	
 		}
-		return ennemis.size()!=0;
+		return !opponents.isEmpty();
 	}
 
 	public void setRoque(boolean roque, int p){
 		this.castling[p-1] = roque;
 	}
 
+	/**
+	 * Check if small castlings are possible.
+	 * @return	ArrayList of 2 booleans for players 1 and 2 containing booleans set to true if a small castling is possible
+	 */
 	public ArrayList <Boolean> smallCastling(){
 		ArrayList <Boolean> pr = new ArrayList <Boolean>();
 		pr.add(false); // No castling done for player 1 (black)
@@ -437,6 +496,10 @@ public class Engine {
 		return pr;
 	}
 
+	/**
+	 * Check if big castlings are possible.
+	 * @return	ArrayList of 2 booleans for players 1 and 2 containing booleans set to true if a big castling is possible
+	 */
 	public ArrayList <Boolean> bigCastling(){
 
 		ArrayList <Boolean> gr = new ArrayList <Boolean>();
@@ -507,14 +570,17 @@ public class Engine {
 		return r;
 	}
 
-	
+	/**
+	 * Check is en passant is possible
+	 * @return	The coordinates of the pawns that can do it.
+	 */
 	public ArrayList<ArrayList <int[]>> enPassant(){
-		ArrayList <ArrayList <int[]>> r = new ArrayList<ArrayList<int[]>>();
-		r.add(new ArrayList<int[]>());
-		r.add(new ArrayList<int[]>());
+		ArrayList <ArrayList <int[]>> r = new ArrayList<>();
+		r.add(new ArrayList<>());
+		r.add(new ArrayList<>());
 
 		// Black player can do en passant		
-		if (this.moves.get(1).size()>0 && this.moves.get(1).get(this.moves.get(1).size()-1)[0][0]==4 && this.moves.get(1).get(this.moves.get(1).size()-1)[1][0]==6 && this.pawn().get(0).size()!=0){
+		if (!this.moves.get(1).isEmpty() && this.moves.get(1).get(this.moves.get(1).size()-1)[0][0]==4 && this.moves.get(1).get(this.moves.get(1).size()-1)[1][0]==6 && this.pawn().get(0).size()!=0){
 			for (int i=0; i<this.pawn().get(0).size(); i++){ 
 				if (this.moves.get(1).get(this.moves.get(1).size()-1)[1][1]==this.pawn().get(0).get(i)[1][1]){ // White pawn near a black pawn
 					r.get(0).add(new int []{5,this.pawn().get(0).get(i)[1][1]}); // Add coordinates for en passant 
@@ -524,7 +590,7 @@ public class Engine {
 			}
 		}
 		// White player can do en passant	
-		if (this.moves.get(0).size()>0 && this.moves.get(0).get(this.moves.get(0).size()-1)[0][0]==3 && this.moves.get(0).get(this.moves.get(0).size()-1)[1][0]==1 && this.pawn().get(1).size()!=0){
+		if (!this.moves.get(0).isEmpty() && this.moves.get(0).get(this.moves.get(0).size()-1)[0][0]==3 && this.moves.get(0).get(this.moves.get(0).size()-1)[1][0]==1 && this.pawn().get(1).size()!=0){
 			for (int i=0; i<this.pawn().get(1).size(); i++){
 				if (this.moves.get(0).get(this.moves.get(0).size()-1)[1][1]==this.pawn().get(1).get(i)[1][1]){
 					r.get(1).add(new int[]{2, this.pawn().get(1).get(i)[1][1]});

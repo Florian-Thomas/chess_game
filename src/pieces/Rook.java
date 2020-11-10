@@ -6,6 +6,9 @@ import javax.swing.ImageIcon;
 
 import game.Engine;
 
+/**
+ * Rook piece.
+ */
 public class Rook extends Pieces{
 
 	// Images
@@ -14,7 +17,10 @@ public class Rook extends Pieces{
 	private ImageIcon iconBlack = new ImageIcon(this.getClass().getResource("black_rook.png"));
 	private Image blackPiece = iconBlack.getImage();
 	
-	// Getters and Setters
+	/**
+	 * Return the image of the piece.
+	 * @return Image of the piece.
+	 */
 	public Image getImage() {
 		if (this.getPlayer()==1) {
 			return blackPiece;
@@ -24,13 +30,21 @@ public class Rook extends Pieces{
 		}
 	}
 	
-	// Constructor
+	/**
+	 * Constructor
+	 * @param player	Player controlling the piece
+	 * @param i			First coordinate of the piece
+	 * @param j			Second coordinate of the piece
+	 * @param g			Game board
+	 */	
 	public Rook(int player, int i, int j, Engine g) {
 		super(player, i, j, g);
 		this.value = 5;
 	}
 
-	// Possible moves
+	/**
+	 * Possible moves
+	 */
 	public ArrayList <int[]> canGo() {
 		ArrayList<int[]> r = new ArrayList<int[]>();
 		int k = 1;
@@ -131,7 +145,9 @@ public class Rook extends Pieces{
 
 	}
 	
-	// Possible targets
+	/**
+	 * Possible targets.
+	 */
 	public ArrayList<int[]> canEat() {
 		
 		ArrayList<int[]> r = new ArrayList<int[]>();

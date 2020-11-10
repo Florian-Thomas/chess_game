@@ -2,22 +2,29 @@ package display;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
-import javax.swing.Timer;
+
 
 import game.Engine;
 
-// Main panel
+/**
+ * Main panel of the game.
+ */
 public class GamePanel extends JPanel{
 	private Engine engine;
+	/**
+	 * Constructor of the panel.
+	 * @param engine Engine containing the game.
+	 */
 	public GamePanel(Engine engine) {
 		this.engine = engine;
 	}
 
-	// Function that needs to be called after any change in the game
+	
+	/**
+	 * Function that needs to be called after any change in the game.
+	 */
 	public void paint(Graphics g) {
 		// Game is over
 		if(engine.isOver()) {

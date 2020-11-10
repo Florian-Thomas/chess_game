@@ -5,12 +5,21 @@ import javax.swing.JFrame;
 
 import game.Engine;
 
+/**
+ * Main window of the game.
+ */
 public class GameWindow extends JFrame{
 	private GamePanel gamePanel;
 	private MouseHandler mouseHandler;
 	private Engine engine;
 	
-	// Main window
+	/**
+	 * Constructor of the main window.
+	 * @param engine	Engine containing the game
+	 * @param mode		Game mode
+	 * @param player	Player's turn
+	 * @param time		Time for the AI
+	 */
 	public GameWindow(Engine engine, String mode, int player, int time) {
 		this.gamePanel = new GamePanel(engine);
 		this.mouseHandler = new MouseHandler(engine, this, mode, player, time);

@@ -4,7 +4,10 @@ import java.util.ArrayList;
 
 import game.Engine;
 
-// Abstract class that needs to be implemented for all the different pieces in the game
+
+/**
+ * Abstract class that needs to be implemented for all the different pieces in the game.
+ */
 public abstract class Pieces {
 	// The piece belongs to a player
 	private int player;
@@ -55,7 +58,13 @@ public abstract class Pieces {
 		this.player = player;
 	}
 
-	// Constructor
+	/**
+	 * Constructor
+	 * @param player	Player controlling the piece
+	 * @param i			First coordinate of the piece
+	 * @param j			Second coordinate of the piece
+	 * @param g			Game board
+	 */	
 	public Pieces(int player, int i, int j, Engine g) {
 		this.player = player;
 		this.i = i;
@@ -63,12 +72,25 @@ public abstract class Pieces {
 		this.engine = g;
 		this.hasMove=false;
 	}
-	
+	/**
+	 * Promote a piece.
+	 */
 	public void promote() {}
+
+	/**
+	 * Return the image of the piece.
+	 * @return	Image of the piece
+	 */
 	public abstract Image getImage();
-	// Returns the possible next locations of the piece
+
+	/**
+	 * Returns the possible next locations of the piece.
+	 */
 	public abstract ArrayList<int[]> canGo();
-	// Returns the possible pieces that can be eaten by this piece
+	
+	/**
+	 * Returns the possible pieces that can be eaten by this piece
+	 */
 	public abstract ArrayList<int[]> canEat();
 	
 

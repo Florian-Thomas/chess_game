@@ -9,7 +9,10 @@ import javax.swing.Timer;
 import AI.MCTS;
 import game.Engine;
 
-// Mouse Listener
+
+/**
+ * Mouse Listener
+ */
 public class MouseHandler implements MouseListener, ActionListener{
 	private Engine engine;
 	private GameWindow gameWindow;
@@ -19,7 +22,14 @@ public class MouseHandler implements MouseListener, ActionListener{
 	private Timer timer;
 
 
-	// Constructor
+	/**
+	 * Constructor of the handler.
+	 * @param engine		Engine containing the game
+	 * @param gameWindow	Main window
+	 * @param mode			Game mode
+	 * @param player		Player's turn
+	 * @param time			Time given to the AI to play
+	 */
 	public MouseHandler(Engine engine, GameWindow gameWindow, String mode, int player, int time) {
 		this.engine = engine;
 		this.gameWindow = gameWindow;
@@ -31,7 +41,9 @@ public class MouseHandler implements MouseListener, ActionListener{
 		this.timer.start();
 	}
 
-	// On click event
+	/**
+	 * On click event.
+	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// Mouse should not work in AI vs AI mode
@@ -197,26 +209,21 @@ public class MouseHandler implements MouseListener, ActionListener{
 	@Override
 	public void mousePressed(MouseEvent e) {
 	}
-	// Play the AI turn, triggered every 0.1s to repaint correctly the panel
+	
+	/**
+	 * Play the AI turn, triggered every 0.1s to repaint correctly the panel.
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==timer){
 			if (mode.equals("Player vs AI")) {
-				if (engine.getTurn()==2 && player==1) {
+				if ((engine.getTurn()==2 && player==1) || (engine.getTurn()==1 && player==2)) {
 					int [][] mcts=MCTS.infer(MCTS.canDo(engine, engine.getTurn()), time , engine, engine.getTurn(), 2);
 					engine.move(mcts[0][0], mcts[0][1], mcts[1][0], mcts[1][1]);
 					engine.moves.get(engine.getTurn()-1).add(new int[][] {{ mcts[1][0], mcts[1][1]},{mcts[0][0], mcts[0][1]}});
 					engine.endTurn();
 					gameWindow.repaint();
-				}
-				else if (engine.getTurn()==1 && player==2) {
-					int [][] mcts=MCTS.infer(MCTS.canDo(engine, engine.getTurn()), time , engine, engine.getTurn(), 2);
-					engine.move(mcts[0][0], mcts[0][1], mcts[1][0], mcts[1][1]);
-					engine.moves.get(engine.getTurn()-1).add(new int[][] {{ mcts[1][0], mcts[1][1]},{mcts[0][0], mcts[0][1]}});
-					engine.endTurn();
-					gameWindow.repaint();
-				}
-				
+				}				
 			}
 		}
 

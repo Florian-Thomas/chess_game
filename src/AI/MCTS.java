@@ -5,8 +5,20 @@ import java.util.ArrayList;
 import game.Engine;
 import pieces.Pieces;
 
+/**
+ * AI class.
+ */
 public class MCTS {
-	// MCTS algorithm
+	
+	/**
+	 * MCTS algorithm.
+	 * @param canDo	Allowed moves
+	 * @param time	Computation time allowed
+	 * @param g		Engine containing the game
+	 * @param p		Player
+	 * @param r		
+	 * @return 		The best move
+	 */
 	public static int[][] infer(ArrayList <int[][]>canDo, int time, Engine g,int p, int r) {
 
 		// Select possible moves using a minimax algorithm to remove absurd moves
@@ -54,7 +66,7 @@ public class MCTS {
 
 			int[][] s = canDoTest.get(n0);
 			// Play the move corresponding to this best play
-			pTest=expand(tableTest,s, pTest, engineTest);
+			pTest=expand(s, pTest, engineTest);
 
 			// Get the next possible moves
 			canDoTest=canDo(engineTest,pTest);
@@ -68,7 +80,7 @@ public class MCTS {
 				isOver=true;
 			}
 			// Continue to play the game with this test board
-			int delta=defaultPolicy(r, isOver, canDoTest, pTest, engineTest, p, g);
+			int delta=defaultPolicy(isOver, canDoTest, pTest, engineTest, p, g);
 
 			// Update the score of the selected move with the result of the game
 			backUp(score, delta, n0);
@@ -82,18 +94,18 @@ public class MCTS {
 			}
 		}
 
-		/*
-		// Print the values of the moves
-		for (int k = 0; k<preSelect.size();k++) {
-			System.out.println("i0 = "+preSelect.get(k)[0][0]+" j0 = "+preSelect.get(k)[0][1]+" i1 = "+preSelect.get(k)[1][0]+" j1 = "+preSelect.get(k)[1][1]+" score = "+score[k][0]+" n = "+score[k][1]);
-		}
-		System.out.println();
-		 */
 		return preSelect.get(n);
 
 	}
-	// Moves the piece
-	public static int expand(Pieces tableau[][],int[][] s, int p, Engine engineTest) {
+
+	/**
+	 * Moves the piece.
+	 * @param s 			Possible moves
+	 * @param p				Player
+	 * @param engineTest	Test engine containing the game
+	 * @return				New player
+	 */
+	public static int expand(int[][] s, int p, Engine engineTest) {
 		int i=s[0][0];
 		int j=s[0][1];
 		int i1=s[1][0];
@@ -101,8 +113,15 @@ public class MCTS {
 		engineTest.move(i,j,i1,j1);
 		return changePlayer(p, engineTest);
 	}
-	// Moves to get back after (simulation)
-	public static Pieces expandAndBackLater(Pieces tableau[][],int[][] s, int p, Engine engineTest) {
+	
+	/**
+	 * Moves to get back after (simulation).
+	 * @param s 			Possible moves
+	 * @param p				Player
+	 * @param engineTest	Test engine containing the game
+	 * @return				Piece eaten
+	 */
+	public static Pieces expandAndBackLater(int[][] s, int p, Engine engineTest) {
 		int i=s[0][0];
 		int j=s[0][1];
 		int i1=s[1][0];
@@ -110,8 +129,17 @@ public class MCTS {
 		Pieces eaten =engineTest.moveAndBackLater(i,j,i1,j1);
 		return eaten;
 	}
-	// Cancel the last simulation move
-	public static int goBack(Pieces tableau[][],int[][] s, int p, Engine engineTest, boolean hasMove, Pieces eaten) {
+
+	/**
+	 * Cancel the last simulated move.
+	 * @param s 			Possible moves
+	 * @param p				Player
+	 * @param engineTest	Test engine containing the game
+	 * @param hasMove		Boolean to know if the piece to replace has moven before
+	 * @param eaten			Piece that has been eaten during the move
+	 * @return				New player's turn
+	 */
+	public static int goBack(int[][] s, int p, Engine engineTest, boolean hasMove, Pieces eaten) {
 		int i=s[0][0];
 		int j=s[0][1];
 		int i1=s[1][0];
@@ -158,7 +186,13 @@ public class MCTS {
 
 
 
-	// All possible moves for p player
+	
+	/**
+	 * All possible moves for p player
+	 * @param engine	Engine containing the game
+	 * @param p			Player
+	 * @return			List of moves
+	 */
 	public static ArrayList <int[][]> canDo(Engine engine, int p) {
 		ArrayList <int[][]>canDo = new ArrayList<int[][]>();
 		Pieces [][] table = engine.getBoard();
@@ -177,14 +211,27 @@ public class MCTS {
 		return canDo;
 	}
 
-	// Update the score with the result of the game
+
+	/**
+	 * Update the score with the result of the game
+	 * @param score	Score to update
+	 * @param delta	Value to update
+	 * @param n0	
+	 */
 	public static void backUp(double[][] score, int delta, int n0){
 		score[n0][1]+=1;
 		score[n0][0]=((score[n0][1]-1)*score[n0][0]+delta)/score[n0][1];
 	}
 
-	// Default policy of the MCTS algorithm: play a part of the game to evaluate a move
-	public static int defaultPolicy(int r,boolean isOver, ArrayList<int[][]> canDoTest, int pTest, Engine engine, int p, Engine g) {
+	
+	/**
+	 * Default policy of the MCTS algorithm: play a part of the game to evaluate a move
+	 * @param isOver		If the game is over
+	 * @param canDoTest		Allowed moves
+	 * @param pTest			Player
+	 * @return 
+	 */
+	public static int defaultPolicy(boolean isOver, ArrayList<int[][]> canDoTest, int pTest, Engine engine, int p, Engine g) {
 		Pieces[][] tableTest = engine.getBoard();
 		int winner = 0;
 		int o = 0;
@@ -202,7 +249,7 @@ public class MCTS {
 				int n = (int)(Math.random()*(canDoTest.size()));
 				int[][] s = canDoTest.get(n);
 				// Play the move
-				pTest = expand(tableTest,s, pTest, engine);
+				pTest = expand(s, pTest, engine);
 			}
 
 			// Check if the game is over or not
@@ -232,13 +279,19 @@ public class MCTS {
 			return value(engine.getBoard(), pTest);
 		}
 		if(engine.isOver()==true) {
-			isOver =true;
+			isOver = true;
 		}
 		// Default return
 		return 0;
 	}
 
-	// Change the player currently playing
+
+	/**
+	 * Change the player currently playing 
+	 * @param p 			Player
+	 * @param engineTest	Test engine
+	 * @return				New player
+	 */
 	public static int changePlayer(int p, Engine engineTest) {
 		if (p==1) {
 			engineTest.setTurn(2);
@@ -250,13 +303,22 @@ public class MCTS {
 		}
 	}
 
-	// Tree policy of the MCTS algorithm
+	
+	/**
+	 * Tree policy of the MCTS algorithm
+	 * @param canDoTest
+	 * @param g
+	 * @param score
+	 * @return
+	 */
 	public static int treePolicy(ArrayList <int[][]>canDoTest, Engine g, double[][] score) {		
 		int n0= bestChild(canDoTest, g, score);
 		return n0;
 	}
 
-	// Get the best child
+	/**
+	 * Get the best child
+	 */
 	public static int bestChild(ArrayList <int[][]>canDoTest, Engine g, double[][] score) {
 		double[] scoreUCB=new double[score.length];
 		int p=0;
@@ -278,7 +340,12 @@ public class MCTS {
 
 	}
 
-	// Minimax algorithm to only keep good moves
+	/**
+	 * Minimax algorithm to only keep good moves.
+	 * @param canDoTest
+	 * @param g
+	 * @return
+	 */
 	public static ArrayList<int[][]> preSelect(ArrayList <int[][]>canDoTest, Engine g){
 		ArrayList<int[][]> preSelect = new ArrayList<int[][]>();
 
@@ -297,7 +364,7 @@ public class MCTS {
 			int[][]s=new int[][] {{canDoTest.get(k)[0][0],canDoTest.get(k)[0][1]}, {canDoTest.get(k)[1][0],canDoTest.get(k)[1][1]}};
 
 			// Play the move
-			expand(engineTest.getBoard(), s ,engineTest.getTurn(), engineTest);
+			expand(s ,engineTest.getTurn(), engineTest);
 
 			// Get the next possible moves
 			ArrayList <int[][]> canDo1=canDo(engineTest, engineTest.getTurn());
@@ -309,14 +376,14 @@ public class MCTS {
 
 				int[][]s1=new int[][] {{canDo1.get(l)[0][0],canDo1.get(l)[0][1]}, {canDo1.get(l)[1][0],canDo1.get(l)[1][1]}};
 				boolean hasMove=engineTest.getBoard()[s1[0][0]][s1[0][1]].hasMove();
-				Pieces eaten=expandAndBackLater(engineTest.getBoard(), s1 ,engineTest.getTurn(), engineTest);
+				Pieces eaten=expandAndBackLater( s1 ,engineTest.getTurn(), engineTest);
 
 				// Find the best move for the player using the algorithm (minimizing the opponent score)
 				if(value(engineTest.getBoard(), g.getTurn())<=m) {
 					m=value(engineTest.getBoard(), g.getTurn());
 				}
 				// Reverse the move to avoid creating a new engine for every move
-				goBack(engineTest.getBoard(), s1, engineTest.getTurn(), engineTest, hasMove, eaten);
+				goBack(s1, engineTest.getTurn(), engineTest, hasMove, eaten);
 			}
 
 			// Move as good as the previous one, to consider
@@ -336,7 +403,11 @@ public class MCTS {
 		return preSelect;
 	}
 	
-	// Check if the game is over or not
+	/**
+	 * Check if the game is over or not.
+	 * @param engine
+	 * @return
+	 */
 	public static int[] check(Engine engine) {
 		int[] s = new int[] {0,0};
 		if (engine.king().size()<2) {
@@ -364,7 +435,13 @@ public class MCTS {
 
 	}
 
-	// Get the value of the board. The value of the pieces is standard for minimax algorithms.
+	
+	/**
+	 * Get the value of the board. The value of the pieces is standard for minimax algorithms.
+	 * @param table
+	 * @param p
+	 * @return
+	 */
 	public static int value(Pieces[][] table, int p) {
 		int t=0;
 		for (int i = 0; i<table.length;i++) {
@@ -384,7 +461,10 @@ public class MCTS {
 
 	}
 
-	// Print the engine to debug
+	/**
+	 * Print the engine to debug.
+	 * @param engine
+	 */
 	public static void printEngine(Engine engine) {
 		Pieces[][] table = engine.getBoard();
 		for (int i = 0; i<table.length;i++) {
