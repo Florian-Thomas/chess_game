@@ -19,5 +19,22 @@ You can then choose the game mode between Player vs Player, Player vs AI and AI 
 
 You will also be asked if you want to play first or not. The white player always plays first in chess.
 
-To move a piece, select it with your left click. You will see the different possible moves with red dots and can then left click on the chosen one. If you have selected a piece and changed your mind, you can unselect it using the right click.
+You will now see the following chess board:
+
+<img src="img/init_board.png" width="300" height="300" />
+
+To move a piece, select it with your left click. You will see the different possible moves with red dots, as in the following image.
+
+<img src="img/selected_board.png" width="300" height="300" />
+
+ You can finally release the piece by clicking on the chosen cell. 
+
+ <img src="img/end_turn.png" width="300" height="300" />
+
+  If you have selected a piece and changed your mind, you can unselect it using the right click.
+
+ It is now the opponent's turn, which can be either another player, or an AI. Can you beat the AI?
+
+
+
 
